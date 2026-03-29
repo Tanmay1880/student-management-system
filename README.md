@@ -43,8 +43,11 @@ StudentManagementSystem/
 ├── service/
 │   └── StudentService.java
 │
-├── database/
+├── database/   (can be renamed to repository)
 │   └── StudentFileDatabase.java
+│
+├── ui/
+│   └── ConsoleUI.java
 │
 └── Main.java
 ```
@@ -62,7 +65,7 @@ git clone <your-repo-link>
 2. Navigate to the project folder
 
 ```
-cd StudentManagementSystem
+cd student-management-system
 ```
 
 3. Compile the project
@@ -79,11 +82,36 @@ java Main
 
 ---
 
+## 🖥️ Sample Output
+
+```
+------------ STUDENT MANAGEMENT SYSTEM ------------
+
+0 : Exit
+1 : Add Student
+2 : View Students
+3 : Delete Student
+4 : Search Student
+5 : Update Student
+
+Enter choice: 1
+Enter name: Himanshu
+Enter age: 45
+Student added successfully
+
+Enter choice: 2
+ID: 1 | Name: Tanmay | Age: 20
+ID: 2 | Name: Varun | Age: 23
+ID: 3 | Name: Sagar | Age: 25
+```
+
+---
+
 ## 💡 Future Improvements
 
-* Add input validation and error handling
+* Add input validation and better error handling
 * Replace text file with a database (MySQL / MongoDB)
-* Build a GUI (JavaFX or Swing)
+* Rename `database` layer to `repository` (industry standard)
 * Add sorting and filtering features
 * Convert into a REST API using Spring Boot
 
@@ -100,4 +128,4 @@ java Main
 
 ## 📌 Author
 
-Tanmay Kaushik 
+Tanmay Kaushik
