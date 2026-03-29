@@ -43,7 +43,7 @@ StudentManagementSystem/
 ├── service/
 │   └── StudentService.java
 │
-├── database/   (can be renamed to repository)
+├── database/   
 │   └── StudentFileDatabase.java
 │
 ├── ui/
