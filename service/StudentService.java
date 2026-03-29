@@ -41,9 +41,22 @@ public class StudentService {
         return false;
     }
 
+    public ArrayList<Student> searchStudentByName(String name) {
+        ArrayList<Student> list = new ArrayList<>();
+
+        for (Student s : students) {
+            if (s.getName().equalsIgnoreCase(name)) {
+                list.add(s);
+            }
+        }
+
+        return list;
+    }
+
 
     public ArrayList<Student> getAllStudents() {
         return new ArrayList<>(students);
+
     }
 
     public Student searchStudent(int id){
