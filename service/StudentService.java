@@ -23,6 +23,14 @@ public class StudentService {
     }
 
     public void addStudent(String name, int age) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+
+        if (age <= 0) {
+            throw new IllegalArgumentException("Invalid age");
+        }
+
         Student s = new Student(name, age, nextId);
         students.add(s);
         nextId++;
@@ -30,15 +38,17 @@ public class StudentService {
     }
 
     public boolean deleteStudent(int id) {
-        for (int i = 0; i < students.size(); i++) {
-            if (students.get(i).getId() == id) {
-                students.remove(i);
-                db.saveStudents(students);
-                return true;
-            }
+
+        Student s = findStudentById(id);
+
+        if (s == null) {
+            return false;
         }
 
-        return false;
+        students.remove(s);
+        db.saveStudents(students);
+        return true;
+
     }
 
     public ArrayList<Student> searchStudentByName(String name) {
@@ -60,30 +70,34 @@ public class StudentService {
     }
 
     public Student searchStudent(int id){
-        for (int i = 0; i < students.size(); i++) {
-            if (students.get(i).getId() == id) {
-                return students.get(i);
-
-            }
-        }
-        return null;
+        return  findStudentById(id);
     }
 
     public boolean updateStudent(int id, String name, int age){
 
 
+                Student s = findStudentById(id);
+                if (s==null){
+                    return false;
+                }
+                else {
+
+                    s.setName(name);
+                    s.setAge(age);
+                    db.saveStudents(students);
+                    return true;
+                }
+
+
+    }
+
+    private Student findStudentById(int id) {
         for (int i = 0; i < students.size(); i++) {
             if (students.get(i).getId() == id) {
-
-                Student s = students.get(i);
-                s.setName(name);
-                s.setAge(age);
-                db.saveStudents(students);
-                return true;
-
+                return students.get(i);
             }
         }
-        db.saveStudents(students);
-        return false;
+        return null;
     }
+
 }
