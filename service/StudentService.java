@@ -1,21 +1,20 @@
 package service;
 
-import database.StudentFileDatabase;
 import model.Student;
+import repository.StudentRepository;
+
 import java.util.ArrayList;
 
 public class StudentService {
 
-    private ArrayList<Student> students;
+    private StudentRepository repo;
     private int nextId;
-    private StudentFileDatabase db;
 
     public StudentService() {
-        this.db = new StudentFileDatabase();
-        this.students = db.loadStudents();
+        this.repo = new StudentRepository();
         this.nextId = 1;
 
-        for (Student s : students) {
+        for (Student s : repo.findAll()) {
             if (s.getId() >= nextId) {
                 nextId = s.getId() + 1;
             }
@@ -23,67 +22,39 @@ public class StudentService {
     }
 
     public void addStudent(String name, int age) {
-    Student s = new Student(name, age, nextId);
-    students.add(s);
-    nextId++;
-    db.saveStudents(students);
-}
+        Student s = new Student(name, age, nextId);
+        repo.save(s);
+        nextId++;
+    }
 
     public boolean deleteStudent(int id) {
+        Student s = repo.findById(id);
+        if (s == null) return false;
 
-        Student s = findStudentById(id);
-
-        if (s == null) {
-            return false;
-        }
-
-        students.remove(s);
-        db.saveStudents(students);
+        repo.delete(s);
         return true;
+    }
 
+    public ArrayList<Student> getAllStudents() {
+        return repo.findAll();
+    }
+
+    public Student searchStudent(int id) {
+        return repo.findById(id);
     }
 
     public ArrayList<Student> searchStudentByName(String name) {
-        ArrayList<Student> list = new ArrayList<>();
-
-        for (Student s : students) {
-            if (s.getName().equalsIgnoreCase(name)) {
-                list.add(s);
-            }
-        }
-
-        return list;
-    }
-
-
-    public ArrayList<Student> getAllStudents() {
-        return new ArrayList<>(students);
-
-    }
-
-    public Student searchStudent(int id){
-        return  findStudentById(id);
+        return repo.findByName(name);
     }
 
     public boolean updateStudent(int id, String name, int age) {
-
-        Student s = findStudentById(id);
+        Student s = repo.findById(id);
         if (s == null) return false;
 
         s.updateName(name);
         s.updateAge(age);
 
-        db.saveStudents(students);
+        repo.update();
         return true;
     }
-
-    private Student findStudentById(int id) {
-        for (int i = 0; i < students.size(); i++) {
-            if (students.get(i).getId() == id) {
-                return students.get(i);
-            }
-        }
-        return null;
-    }
-
 }

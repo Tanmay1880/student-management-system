@@ -1,10 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Student {
 
     private String name;
     private int age;
-    private int id;
+    private final int id;
+    private List<Course> courses;
 
     public Student(String name, int age, int id) {
 
@@ -19,6 +23,7 @@ public class Student {
         this.name = name.trim();
         this.age = age;
         this.id = id;
+        this.courses = new ArrayList<>();
     }
 
     // getters
@@ -48,6 +53,22 @@ public class Student {
             throw new IllegalArgumentException("Invalid age");
         }
         this.age = age;
+    }
+    public void enrollCourse(Course course) {
+        if (course == null) {
+            throw new IllegalArgumentException("Course cannot be null");
+        }
+        if (courses.size() >= 5) {
+            throw new IllegalArgumentException("Max courses reached");
+        }
+        if (courses.contains(course)) {
+            throw new IllegalArgumentException("Already enrolled in this course");
+        }
+        else courses.add(course);
+    }
+
+    public List<Course> getCourses() {
+        return new ArrayList<>(courses);
     }
 
 }
