@@ -59,7 +59,7 @@ public class ConsoleUI {
 
     private void addStudent() {
         String name = getValidString("Enter name: ");
-        int age  = getValidAge("Enter age: ");
+        int age = getValidAge("Enter age: ");
 
         while (true) {
             try {
@@ -73,7 +73,6 @@ public class ConsoleUI {
             }
         }
     }
-
     private void viewStudents() {
         ArrayList<Student> list = service.getAllStudents();
         printStudentList(list);

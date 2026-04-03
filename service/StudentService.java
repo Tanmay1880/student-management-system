@@ -23,12 +23,11 @@ public class StudentService {
     }
 
     public void addStudent(String name, int age) {
-
-        Student s = new Student(name, age, nextId);
-        students.add(s);
-        nextId++;
-        db.saveStudents(students);
-    }
+    Student s = new Student(name, age, nextId);
+    students.add(s);
+    nextId++;
+    db.saveStudents(students);
+}
 
     public boolean deleteStudent(int id) {
 
@@ -66,22 +65,16 @@ public class StudentService {
         return  findStudentById(id);
     }
 
-    public boolean updateStudent(int id, String name, int age){
+    public boolean updateStudent(int id, String name, int age) {
 
+        Student s = findStudentById(id);
+        if (s == null) return false;
 
-                Student s = findStudentById(id);
-                if (s==null){
-                    return false;
-                }
-                else {
+        s.updateName(name);
+        s.updateAge(age);
 
-                    s.updateName(name);
-                    s.updateAge(age);
-                    db.saveStudents(students);
-                    return true;
-                }
-
-
+        db.saveStudents(students);
+        return true;
     }
 
     private Student findStudentById(int id) {
