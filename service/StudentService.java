@@ -4,6 +4,7 @@ import model.Student;
 import repository.StudentRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StudentService {
 
@@ -28,14 +29,10 @@ public class StudentService {
     }
 
     public boolean deleteStudent(int id) {
-        Student s = repo.findById(id);
-        if (s == null) return false;
-
-        repo.delete(s);
-        return true;
+        return repo.deleteById(id);
     }
 
-    public ArrayList<Student> getAllStudents() {
+    public List<Student> getAllStudents() {
         return repo.findAll();
     }
 
@@ -43,7 +40,7 @@ public class StudentService {
         return repo.findById(id);
     }
 
-    public ArrayList<Student> searchStudentByName(String name) {
+    public List<Student> searchStudentByName(String name) {
         return repo.findByName(name);
     }
 
@@ -53,8 +50,10 @@ public class StudentService {
 
         s.updateName(name);
         s.updateAge(age);
-
-        repo.update();
         return true;
+    }
+
+    public void saveAll() {
+        repo.saveAll();
     }
 }

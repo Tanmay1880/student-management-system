@@ -4,6 +4,7 @@ import database.StudentFileDatabase;
 import model.Student;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StudentRepository {
 
@@ -15,18 +16,20 @@ public class StudentRepository {
         this.students = db.loadStudents();
     }
 
-    public ArrayList<Student> findAll() {
+    public List<Student> findAll() {
         return new ArrayList<>(students);
     }
 
     public void save(Student student) {
         students.add(student);
-        db.saveStudents(students);
     }
 
-    public void delete(Student student) {
-        students.remove(student);
-        db.saveStudents(students);
+    public boolean deleteById(int id){
+        Student s = findById(id);
+        if (s == null) return false;
+
+        students.remove(s);
+        return true;
     }
 
     public Student findById(int id) {
@@ -36,8 +39,8 @@ public class StudentRepository {
         return null;
     }
 
-    public ArrayList<Student> findByName(String name) {
-        ArrayList<Student> list = new ArrayList<>();
+    public List<Student> findByName(String name) {
+        List<Student> list = new ArrayList<>();
 
         for (Student s : students) {
             if (s.getName().equalsIgnoreCase(name)) {
@@ -48,7 +51,7 @@ public class StudentRepository {
         return list;
     }
 
-    public void update() {
+    public void saveAll() {
         db.saveStudents(students);
     }
 }

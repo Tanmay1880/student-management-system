@@ -4,6 +4,7 @@ import model.Student;
 import service.StudentService;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -31,7 +32,10 @@ public class ConsoleUI {
                     case 3 -> deleteStudent();
                     case 4 -> searchStudent();
                     case 5 -> updateStudent();
-                    case 0 -> System.out.println("Thank you!");
+                    case 0 ->{
+                        service.saveAll();
+                        System.out.println("Thank you!");
+                    }
                 }
             } catch (Exception e) {
                 System.out.println("Something went wrong: " + e.getMessage());
@@ -74,7 +78,7 @@ public class ConsoleUI {
         }
     }
     private void viewStudents() {
-        ArrayList<Student> list = service.getAllStudents();
+        List<Student> list = service.getAllStudents();
         printStudentList(list);
     }
 
@@ -105,7 +109,7 @@ public class ConsoleUI {
 
     private void searchByName() {
         String name            = getValidString("Enter student name: ");
-        ArrayList<Student> list = service.searchStudentByName(name);
+        List<Student> list = service.searchStudentByName(name);
         printStudentList(list);
     }
 
@@ -126,7 +130,7 @@ public class ConsoleUI {
                 + " | Age:  " + s.getAge());
     }
 
-    private void printStudentList(ArrayList<Student> list) {
+    private void printStudentList(List<Student> list) {
         if (list.isEmpty()) {
             System.out.println("No students found.");
             return;
