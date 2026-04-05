@@ -67,6 +67,21 @@ public class Student {
         else courses.add(course);
     }
 
+    public boolean unrollCourse(Course course){
+        if (course==null){
+            throw new IllegalArgumentException("Course cannot be null");
+        }
+        if (courses.size()==1){
+            throw  new IllegalStateException("Student Should be enrolled in at least one course");
+        }
+        if (courses.contains(course)){
+            return courses.remove(course);
+        }
+
+
+        return false;
+    }
+
     public List<Course> getCourses() {
         return new ArrayList<>(courses);
     }
