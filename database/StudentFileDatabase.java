@@ -7,32 +7,26 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 public class StudentFileDatabase {
 
-  public  void saveStudents(ArrayList<Student> students){
+  public  void saveStudents(List<Student> students){
 
-      try{
-          FileWriter writer = new FileWriter("students.txt");
-
-          for(Student i : students){
-              String line = i.getId()+","+ i.getName()+","+i.getAge();
-              writer.write(line+"\n");
-
-      }
-          writer.close();
-      }
-      catch (IOException e) {
+      try (FileWriter writer = new FileWriter("students.txt")) {
+          for (Student i : students) {
+              String line = i.getId() + "," + i.getName() + "," + i.getAge();
+              writer.write(line + "\n");
+          }
+      } catch (IOException e) {
           e.printStackTrace();
       }
-
-
     }
 
-  public ArrayList<Student> loadStudents(){
-      ArrayList<Student> list = new ArrayList<>();
-      try {
-          BufferedReader reader = new BufferedReader(new FileReader("students.txt"));
+  public List<Student> loadStudents(){
+       List<Student> list = new ArrayList<>();
+      try(BufferedReader reader = new BufferedReader(new FileReader("students.txt"))) {
+
           String line ;
           while ((line = reader.readLine()) != null){
 
@@ -44,8 +38,6 @@ public class StudentFileDatabase {
               list.add(s);
 
           }
-
-          reader.close();
 
       } catch (IOException e) {
           // it means file is not created

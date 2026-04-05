@@ -64,7 +64,7 @@ public class Student {
         if (courses.contains(course)) {
             throw new IllegalArgumentException("Already enrolled in this course");
         }
-        else courses.add(course);
+        courses.add(course);
     }
 
     public boolean unrollCourse(Course course){
@@ -74,12 +74,8 @@ public class Student {
         if (courses.size()==1){
             throw  new IllegalStateException("Student Should be enrolled in at least one course");
         }
-        if (courses.contains(course)){
-            return courses.remove(course);
-        }
 
-
-        return false;
+        return courses.remove(course);
     }
 
     public List<Course> getCourses() {

@@ -2,8 +2,6 @@ package ui;
 
 import model.Student;
 import service.StudentService;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -62,18 +60,15 @@ public class ConsoleUI {
     // ─────────────────────── FEATURES ───────────────────────
 
     private void addStudent() {
-        String name = getValidString("Enter name: ");
-        int age = getValidAge("Enter age: ");
-
         while (true) {
             try {
+                String name = getValidString("Enter name: ");
+                int age = getValidAge("Enter age: ");
                 service.addStudent(name, age);
                 System.out.println("Student added successfully.");
                 break;
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                name = getValidString("Enter name: ");
-                age = getValidAge("Enter age: ");
             }
         }
     }

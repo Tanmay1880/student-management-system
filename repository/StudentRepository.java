@@ -9,7 +9,7 @@ import java.util.List;
 public class StudentRepository {
 
     private StudentFileDatabase db;
-    private ArrayList<Student> students;
+    private List<Student> students;
 
     public StudentRepository() {
         this.db = new StudentFileDatabase();

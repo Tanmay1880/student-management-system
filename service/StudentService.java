@@ -2,8 +2,6 @@ package service;
 
 import model.Student;
 import repository.StudentRepository;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class StudentService {
