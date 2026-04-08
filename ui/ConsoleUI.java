@@ -3,6 +3,7 @@ package ui;
 import model.Student;
 import service.StudentService;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -16,7 +17,10 @@ public class ConsoleUI {
     }
 
     public void start() {
-        System.out.println("\n<----------- STUDENT MANAGEMENT SYSTEM ----------->");
+        System.out.println();
+        System.out.println("==============================================");
+        System.out.println("         STUDENT MANAGEMENT SYSTEM");
+        System.out.println("==============================================");
 
         int choice;
         do {
@@ -32,7 +36,7 @@ public class ConsoleUI {
                     case 5 -> updateStudent();
                     case 0 ->{
                         service.saveAll();
-                        System.out.println("Thank you!");
+                        System.out.println("Saved. Goodbye!");
                     }
                 }
             } catch (Exception e) {
@@ -47,14 +51,15 @@ public class ConsoleUI {
     // ─────────────────────── MENU ───────────────────────
 
     private void showMenu() {
-        System.out.println("""
-            0 : Exit
-            1 : Add Student
-            2 : View Students
-            3 : Delete Student
-            4 : Search Student
-            5 : Update Student
-            """);
+        System.out.println();
+        System.out.println("--------------- MENU ---------------");
+        System.out.println(" 0 : Exit (save)");
+        System.out.println(" 1 : Add Student");
+        System.out.println(" 2 : View Students");
+        System.out.println(" 3 : Delete Student");
+        System.out.println(" 4 : Search Student");
+        System.out.println(" 5 : Update Student");
+        System.out.println("-----------------------------------");
     }
 
     // ─────────────────────── FEATURES ───────────────────────
@@ -62,8 +67,11 @@ public class ConsoleUI {
     private void addStudent() {
         while (true) {
             try {
-                String name = getValidString("Enter name: ");
-                int age = getValidAge("Enter age: ");
+                System.out.println();
+                System.out.println("Add Student");
+                System.out.println("-----------");
+                String name = getValidString("Name: ");
+                int age = getValidAge("Age: ");
                 service.addStudent(name, age);
                 System.out.println("Student added successfully.");
                 break;
@@ -73,45 +81,69 @@ public class ConsoleUI {
         }
     }
     private void viewStudents() {
+        System.out.println();
+        System.out.println("All Students");
+        System.out.println("------------");
         List<Student> list = service.getAllStudents();
         printStudentList(list);
     }
 
     private void deleteStudent() {
-        int id      = getValidId("Enter student ID: ");
+        System.out.println();
+        System.out.println("Delete Student");
+        System.out.println("--------------");
+        int id      = getValidId("Student ID: ");
         boolean deleted = service.deleteStudent(id);
 
         System.out.println(deleted ? "Student deleted successfully." : "Student not found.");
     }
 
     private void searchStudent() {
-        int searchChoice = getValidInt(" 1 : Search by ID\n 2 : Search by Name\nEnter choice: ");
+        while (true) {
+            System.out.println();
+            System.out.println("Search Student");
+            System.out.println("--------------");
+            int searchChoice = getValidInt("""
+                0 : Back
+                1 : Search by ID
+                2 : Search by Name
+                Choice: """);
 
-        switch (searchChoice) {
-            case 1 -> searchById();
-            case 2 -> searchByName();
-            default -> System.out.println("Invalid option.");
+            switch (searchChoice) {
+                case 0 -> { return; }
+                case 1 -> searchById();
+                case 2 -> searchByName();
+                default -> System.out.println("Invalid option.");
+            }
         }
     }
 
     private void searchById() {
-        int id    = getValidId("Enter student ID: ");
-        Student s = service.searchStudent(id);
+        int id    = getValidId("Student ID: ");
+        Optional<Student> result = service.searchStudent(id);
 
-        if (s != null) printStudent(s);
-        else           System.out.println("Student not found.");
+        if (result.isPresent()) {
+            Student s = result.get();
+            System.out.println();
+            printStudent(s);
+        } else {
+            System.out.println("Student not found.");
+        }
     }
 
     private void searchByName() {
-        String name            = getValidString("Enter student name: ");
+        String name            = getValidString("Student name: ");
         List<Student> list = service.searchStudentByName(name);
         printStudentList(list);
     }
 
     private void updateStudent() {
-        int    id   = getValidId("Enter student ID: ");
-        String name = getValidString("Enter new name: ");
-        int    age  = getValidAge("Enter new age: ");
+        System.out.println();
+        System.out.println("Update Student");
+        System.out.println("--------------");
+        int    id   = getValidId("Student ID: ");
+        String name = getValidString("New name: ");
+        int    age  = getValidAge("New age: ");
 
         boolean updated = service.updateStudent(id, name, age);
         System.out.println(updated ? "Updated successfully." : "Student not found.");
@@ -120,9 +152,7 @@ public class ConsoleUI {
     // ─────────────────────── PRINT HELPERS ───────────────────────
 
     private void printStudent(Student s) {
-        System.out.println("ID: " + s.getId()
-                + " | Name: " + s.getName()
-                + " | Age:  " + s.getAge());
+        System.out.printf("ID: %d | Name: %s | Age: %d%n", s.getId(), s.getName(), s.getAge());
     }
 
     private void printStudentList(List<Student> list) {
@@ -130,11 +160,22 @@ public class ConsoleUI {
             System.out.println("No students found.");
             return;
         }
-        list.forEach(this::printStudent);
+        System.out.println("+----+------------------------------+-----+");
+        System.out.println("| ID | Name                         | Age |");
+        System.out.println("+----+------------------------------+-----+");
+        for (Student s : list) {
+            System.out.printf("| %2d | %-28s | %3d |%n", s.getId(), truncate(s.getName(), 28), s.getAge());
+        }
+        System.out.println("+----+------------------------------+-----+");
     }
 
     // ─────────────────────── INPUT HELPERS ───────────────────────
 
+    private String truncate(String s, int maxLen) {
+        if (s == null) return "";
+        if (s.length() <= maxLen) return s;
+        return s.substring(0, Math.max(0, maxLen - 3)) + "...";
+    }
 
     private String getValidString(String prompt) {
         while (true) {

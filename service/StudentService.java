@@ -3,6 +3,7 @@ package service;
 import model.Student;
 import repository.StudentRepository;
 import java.util.List;
+import java.util.Optional;
 
 public class StudentService {
 
@@ -34,7 +35,7 @@ public class StudentService {
         return repo.findAll();
     }
 
-    public Student searchStudent(int id) {
+    public Optional <Student> searchStudent(int id) {
         return repo.findById(id);
     }
 
@@ -43,9 +44,10 @@ public class StudentService {
     }
 
     public boolean updateStudent(int id, String name, int age) {
-        Student s = repo.findById(id);
-        if (s == null) return false;
+        Optional<Student> opt = repo.findById(id);
+        if (opt.isEmpty()) return false;
 
+        Student s = opt.get();
         s.updateName(name);
         s.updateAge(age);
         return true;

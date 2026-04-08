@@ -5,6 +5,7 @@ import model.Student;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class StudentRepository {
 
@@ -25,18 +26,15 @@ public class StudentRepository {
     }
 
     public boolean deleteById(int id){
-        Student s = findById(id);
-        if (s == null) return false;
-
-        students.remove(s);
-        return true;
+        return findById(id).map(students::remove).orElse(false);
     }
 
-    public Student findById(int id) {
+
+    public Optional<Student> findById(int id) {
         for (Student s : students) {
-            if (s.getId() == id) return s;
+            if (s.getId() == id) return Optional.of(s);
         }
-        return null;
+        return Optional.empty();
     }
 
     public List<Student> findByName(String name) {
